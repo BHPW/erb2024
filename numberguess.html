@@ -1,0 +1,77 @@
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <h1>숫자 맞추기 게임</h1>
+    <div id="screen">1~100 숫자 입력</div>
+    <input id="datain">
+    <button onclick="start1()">확인</button>
+    <canvas id="mychart"></canvas>
+    <script>
+        function makechart() {
+            alert("makechart");
+            datainfo = {
+                labels: labels,
+                datasets: [{
+                        label: "answer",
+                        backgroundColor: ['gray', 'red'],
+                        borderColor: 'blue',
+                        data: ans_data,
+                        tension: 0.5
+                    },
+                    {
+                        label: "inputNumber",
+                        backgroundColor: ['gray', 'green'],
+                        borderColor: 'blue',
+                        data:num_in,
+                        tension: 0.5
+                    }
+                ]
+            };
+            config = {
+                type: "line",
+                data: datainfo,
+                options: []
+            };
+            new Chart(document.querySelector("#mychart"), config);
+        }
+        answer = Math.floor(Math.random() * 100) + 1;
+        alert(answer);
+        start = document.querySelector("#screen");
+        num = document.querySelector("#datain");
+        try_playing = 0;
+        Mtry_playing = 10;
+        num_in = [];
+        ans_data = [],
+            labels = [];
+        function start1() {
+            inputNumber = num.value;
+            if (isNaN(inputNumber)) {
+                alert("숫자아님");
+                return;
+            }
+            start.innerHTML += "<br>입력값은 " + num.value;
+            if (inputNumber <= 0)
+                start.innerHTML += "<br>숫자를 입력하세요";
+            num_in[try_playing] = inputNumber, labels[try_playing] = try_playing + 1; ans_data[try_playing] = answer;
+            try_playing++;
+            if (try_playing > Mtry_playing) {
+                start.innerHTML += "현재 최대 횟수에 도달했습니다. 실패입니다.";
+            }
+            if (answer == inputNumber) {
+               start.innerHTML += "축하드립니다.정답입니다. " + try_playing + "번 만에 맞추셨습니다.<br>"
+               start.innerHTML += "입력한 값:[" + num_in + "]" + labels + ans_data
+                makechart();
+                return;
+            } else if (answer > inputNumber) {
+                start.innerHTML += "아쉽게도 정답이 아닙니다. 더 큰 값을 넣으세요. 현재" + try_playing + "번째 시도입니다.";
+                num.value = "";
+            } else if (answer < inputNumber) {
+                start.innerHTML += "아쉽게도 정답이 아닙니다. 더 작은 값을 넣으세요. 현재" + try_playing + "번째 시도입니다.";
+                num.value = "";
+            }
+        }
+    </script>
+</body>
+</html>
